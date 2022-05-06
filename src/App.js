@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { ErrorContext } from "./contexts/ErrorContext";
+import { SuccessMessageContext } from "./contexts/SuccessMessageContext";
+import { UserContext } from "./contexts/UserContext";
+import Router from "./routes/Router";
 
 function App() {
+  const [user, setUser] = useState({id: "", username: ""});
+  const [error, setError] = useState({isError: false, message: ""})  
+  const [success, setSuccess] = useState({sucess: true, message: ""});
+
+  const clearError = () => {
+    setError({isError: false, message: null})
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={{user, setUser}}>
+        <ErrorContext.Provider value={{ error, setError, clearError}}>
+          <SuccessMessageContext.Provider value={{success, setSuccess}}>
+            <Router />
+          </SuccessMessageContext.Provider>
+        </ErrorContext.Provider>   
+    </UserContext.Provider>         
   );
 }
 
